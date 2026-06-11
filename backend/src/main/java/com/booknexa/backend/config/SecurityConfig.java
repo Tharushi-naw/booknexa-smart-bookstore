@@ -48,6 +48,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/orders/my-orders").hasAnyRole("CUSTOMER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/orders/all").hasRole("ADMIN")
 
+                        .requestMatchers(HttpMethod.GET, "/api/recommendations/popular").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/recommendations/my").hasAnyRole("CUSTOMER", "ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)

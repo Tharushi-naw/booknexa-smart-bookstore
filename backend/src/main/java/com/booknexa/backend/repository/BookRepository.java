@@ -12,4 +12,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             String author,
             String category
     );
+
+    List<Book> findByCategoryIgnoreCaseAndQuantityGreaterThan(String category, Integer quantity);
+
+    List<Book> findByQuantityGreaterThan(Integer quantity);
 }
