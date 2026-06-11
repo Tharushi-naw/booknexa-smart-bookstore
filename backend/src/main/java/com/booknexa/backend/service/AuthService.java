@@ -6,6 +6,7 @@ import com.booknexa.backend.dto.RegisterRequest;
 import com.booknexa.backend.model.Role;
 import com.booknexa.backend.model.User;
 import com.booknexa.backend.repository.UserRepository;
+import com.booknexa.backend.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,12 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     public AuthResponse register(RegisterRequest request) {
@@ -44,8 +47,11 @@ public class AuthService {
 
         User savedUser = userRepository.save(user);
 
+        String token = jwtUtil.generateToken(savedUser.getEmail(), savedUser.getRole().name());
+
         return new AuthResponse(
                 "User registered successfully",
+                token,
                 savedUser.getId(),
                 savedUser.getName(),
                 savedUser.getEmail(),
@@ -63,8 +69,11 @@ public class AuthService {
             throw new RuntimeException("Invalid email or password");
         }
 
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+
         return new AuthResponse(
                 "Login successful",
+                token,
                 user.getId(),
                 user.getName(),
                 user.getEmail(),

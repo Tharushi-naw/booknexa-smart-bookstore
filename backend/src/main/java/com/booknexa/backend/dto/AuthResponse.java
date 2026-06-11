@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 public class AuthResponse {
 
     private String message;
+    private String token;
     private Long userId;
     private String name;
     private String email;
@@ -14,9 +15,10 @@ public class AuthResponse {
     private boolean premium;
     private BigDecimal discountRate;
 
-    public AuthResponse(String message, Long userId, String name, String email,
+    public AuthResponse(String message, String token, Long userId, String name, String email,
                         Role role, boolean premium, BigDecimal discountRate) {
         this.message = message;
+        this.token = token;
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -27,6 +29,10 @@ public class AuthResponse {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public Long getUserId() {
